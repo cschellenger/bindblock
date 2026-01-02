@@ -1,0 +1,11 @@
+{
+    "passthrough": [
+        "yourdomain.example.com"
+    ],
+    "adlists": [
+        {
+            "name": "adguard",
+            "url": "https://v.firebog.net/hosts/AdguardDNS.txt"
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+\#*\#
+*~
+*.pyc
+__pycache__/
+.vscode/
+.venv/
+db.rpz.local
+adguard.txt
+config.local.json
