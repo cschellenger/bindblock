@@ -5,7 +5,13 @@
     "adlists": [
         {
             "name": "adguard",
-            "url": "https://v.firebog.net/hosts/AdguardDNS.txt"
+            "url": "https://v.firebog.net/hosts/AdguardDNS.txt",
+            "type": "DOMAINS"
+        },
+        {
+            "name": "yoyo",
+            "url": "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext",
+            "type": "HOSTSFILE"
         }
     ]
 }

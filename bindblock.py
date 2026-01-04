@@ -1,3 +1,4 @@
+import enum
 import json
 import requests
 import re
@@ -15,14 +16,21 @@ class Config:
         for adlist in adlists:
             name = adlist.get("name")
             url = adlist.get("url")
-            self.adlists.append(HostList(name, url))
+            list_type_str = adlist.get("type", "DOMAINS").upper()
+            list_type = ListType[list_type_str] if list_type_str in ListType else ListType.DOMAINS
+            self.adlists.append(HostList(name, url, list_type))
+
+class ListType(enum.StrEnum):
+    DOMAINS = "DOMAINS"
+    HOSTSFILE = "HOSTSFILE"
 
 
 class HostList:
 
-    def __init__(self, name: str, url: str):
+    def __init__(self, name: str, url: str, list_type: ListType = ListType.DOMAINS):
         self.name = name
         self.url = url
+        self.list_type = list_type
         self.hosts = []
 
     def filename(self):
@@ -38,12 +46,26 @@ class HostList:
             f.write(text)
         return text
 
-    def _parse_hosts(self, text: str) -> List[str]:
+    def _parse_hosts_domains(self, text: str) -> List[str]:
+        print("Parsing DOMAINS format for {}".format(self.name))
         hosts = []
         expr = r'^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,6}$'
         for host in text.split("\n"):
             if re.fullmatch(expr, host.strip()):
-                hosts.append(host)
+                hosts.append(host.strip())
+        return hosts
+
+    def _parse_hosts_file(self, text: str) -> List[str]:
+        print("Parsing HOSTS file format for {}".format(self.name))
+        hosts = []
+        expr = r'^\d+\.\d+\.\d+\.\d+\s+(((?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,6})$'
+        for line in text.split("\n"):
+            line = line.strip()
+            if line.startswith("#") or line == "":
+                continue
+            match = re.fullmatch(expr, line)
+            if match:
+                hosts.append(match.group(1))
         return hosts
 
     def load(self) -> None:
@@ -52,7 +74,10 @@ class HostList:
                 text = f.read()
         else:
             text = self.update_host_list()
-        self.hosts = self._parse_hosts(text)
+        if self.list_type == ListType.DOMAINS:
+            self.hosts = self._parse_hosts_domains(text)
+        elif self.list_type == ListType.HOSTSFILE:
+            self.hosts = self._parse_hosts_file(text)
 
 
 class BindBlockBuilder:
@@ -61,9 +86,9 @@ class BindBlockBuilder:
         self.host_lists = config.adlists
 
     def build(self, filename) -> None:
-        all_hosts = []
+        all_hosts = set()
         for host_list in self.host_lists:
-            all_hosts.extend(host_list.hosts)
+            all_hosts.update(host_list.hosts)
         rpz = """$TTL 300
 @ IN SOA localhost. need.to.know.only. (
   {} ; Serial number
