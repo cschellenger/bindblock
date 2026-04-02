@@ -7,4 +7,6 @@ __pycache__/
 db.rpz.local
 adguard.txt
 yoyo.txt
+hagezi-abuse.txt
+urlhaus-abuse.txt
 config.local.json

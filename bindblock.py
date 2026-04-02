@@ -24,7 +24,6 @@ class ListType(enum.StrEnum):
     DOMAINS = "DOMAINS"
     HOSTSFILE = "HOSTSFILE"
 
-
 class HostList:
 
     def __init__(self, name: str, url: str, list_type: ListType = ListType.DOMAINS):

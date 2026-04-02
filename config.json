@@ -12,6 +12,16 @@
             "name": "yoyo",
             "url": "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext",
             "type": "HOSTSFILE"
+        },
+        {
+            "name": "urlhaus-abuse",
+            "url": "https://urlhaus.abuse.ch/downloads/hostfile",
+            "type": "HOSTSFILE"
+        },
+        {
+            "name": "hagezi-abuse",
+            "url": "https://raw.githubusercontent.com/hagezi/dns-blocklists/refs/heads/main/hosts/tif.txt",
+            "type": "HOSTSFILE"
         }
     ]
 }
