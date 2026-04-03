@@ -6,6 +6,7 @@ __pycache__/
 .venv/
 db.rpz.local
 adguard.txt
+adaway.txt
 yoyo.txt
 hagezi-abuse.txt
 urlhaus-abuse.txt

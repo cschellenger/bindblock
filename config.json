@@ -22,6 +22,11 @@
             "name": "hagezi-abuse",
             "url": "https://raw.githubusercontent.com/hagezi/dns-blocklists/refs/heads/main/hosts/tif.txt",
             "type": "HOSTSFILE"
+        },
+        {
+            "name": "adaway",
+            "url": "https://adaway.org/hosts.txt",
+            "type": "HOSTSFILE"
         }
     ]
 }
